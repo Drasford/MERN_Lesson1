@@ -1,11 +1,14 @@
-import { FETCH_ALL, CREATE } from "../actions/types";
+import { CREATE, LOAD_ALL } from "../actions/types";
+
+const createPost = (posts, { post }) => ([...posts, post]);
+
 
 export const posts = (posts = [], action) => {
   switch (action.type) {
-    case FETCH_ALL:
+    case LOAD_ALL:
       return action.payload;
     case CREATE:
-      return posts;
+      return createPost(posts, action.payload);
     default:
       return posts;
   }
