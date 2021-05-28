@@ -2,25 +2,40 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
-import { createPost } from "../../actions/posts";
-import { useDispatch } from "react-redux";
+import { createPost, requestUpdatePost } from "../../actions/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { find, propEq } from "ramda";
+import { getAllPostsSelector } from "../../selectors/index";
 
 const Form = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const currentId = useSelector((state) => state.postsState.idToUpdate);
+  const allPosts = useSelector(getAllPostsSelector);
+  const post = find(propEq("_id", currentId), allPosts);
+
   const [postData, setPostData] = useState({
     creator: "",
     title: "",
     message: "",
-    tags: "",
+    tags: [],
     selectedFile: "",
   });
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (post) {
+      setPostData(post);
+    }
+  }, [post, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPost(postData));
+
+    if (currentId) {
+      dispatch(requestUpdatePost(currentId, postData));
+    } else {
+      dispatch(createPost(postData));
+    }
   };
 
   const clear = () => {
@@ -28,7 +43,7 @@ const Form = () => {
       creator: "",
       title: "",
       message: "",
-      tags: "",
+      tags: [],
       selectedFile: "",
     });
   };
@@ -42,7 +57,9 @@ const Form = () => {
           className={`${classes.root} ${classes.form}`}
           onSubmit={handleSubmit}
         >
-          <Typography variant="h6">Creating a memory</Typography>
+          <Typography variant="h6">
+            {currentId ? "Editing " : "Creating "} a memory
+          </Typography>
           <TextField
             name="creator"
             variant="outlined"
@@ -56,7 +73,7 @@ const Form = () => {
           <TextField
             name="title"
             variant="outlined"
-            label="Tit"
+            label="Title"
             fullWidth
             value={postData.title}
             onChange={(e) =>
@@ -79,7 +96,9 @@ const Form = () => {
             label="Tags"
             fullWidth
             value={postData.tags}
-            onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+            onChange={(e) =>
+              setPostData({ ...postData, tags: e.target.value.split(",") })
+            }
           />
           <div className={classes.fileInput}>
             <FileBase

@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "./actions/posts";
 import memories from "./images/memories.png";
 import Form from "./components/Form/Form";
 import Posts from "./components/Posts/Posts";
 import useStyles from "./styles";
+import { getIdToUpdateSelector } from "./selectors";
 
 const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const idToUpdate = useSelector(getIdToUpdateSelector)
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [dispatch]);
+  }, [dispatch, idToUpdate]);
 
   return (
     <Container maxwidth="lg">
