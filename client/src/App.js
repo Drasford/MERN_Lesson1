@@ -11,7 +11,7 @@ import { getIdToUpdateSelector } from "./selectors";
 const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const idToUpdate = useSelector(getIdToUpdateSelector)
+  const idToUpdate = useSelector(getIdToUpdateSelector);
 
   useEffect(() => {
     dispatch(getPosts());
@@ -35,6 +35,7 @@ const App = () => {
           <Grid
             container
             justify="space-between"
+            className={classes.mainContainer}
             alignItems="stretch"
             spacing={3}
           >

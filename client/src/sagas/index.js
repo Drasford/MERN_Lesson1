@@ -1,13 +1,13 @@
 import { call, takeEvery, put } from "redux-saga/effects";
 import {
-  createPost,
+  responseCreatePost,
   responseUpdatePost,
   loadPosts,
   clearIdToUpdate,
 } from "../actions/posts";
 import {
   FETCH_ALL,
-  CREATE,
+  REQUEST_CREATE_POST,
   DELETE_POST,
   REQUEST_UPDATE_POST,
   LIKE_POST,
@@ -25,10 +25,10 @@ function* fetchAllPostsSaga() {
 
 function* createNewPostSaga({ payload }) {
   try {
-    const { data } = yield call(api.createPost(payload.post));
-    yield put(createPost(data));
+    const { data } = yield call(api.createPost, payload.post);
+    yield put(responseCreatePost(data));
   } catch (error) {
-    console.log(error.message + " create error, go pustam od saga :)");
+    throw(error)
   }
 }
 
@@ -65,7 +65,7 @@ function* likePostSaga({ payload }) {
 
 export default function* rootSaga() {
   yield takeEvery(FETCH_ALL, fetchAllPostsSaga);
-  yield takeEvery(CREATE, createNewPostSaga);
+  yield takeEvery(REQUEST_CREATE_POST, createNewPostSaga);
   yield takeEvery(DELETE_POST, deletePostSaga);
   yield takeEvery(REQUEST_UPDATE_POST, updatePostSaga);
   yield takeEvery(LIKE_POST, likePostSaga);

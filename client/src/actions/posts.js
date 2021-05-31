@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, DELETE_POST, REQUEST_UPDATE_POST, ID_TO_UPDATE, LOAD_POSTS, CLEAR_ID_TO_UPDATE, RESPONSE_UPDATE_POST, LIKE_POST } from "./types";
+import { FETCH_ALL, DELETE_POST, REQUEST_UPDATE_POST, ID_TO_UPDATE, LOAD_POSTS, CLEAR_ID_TO_UPDATE, RESPONSE_UPDATE_POST, LIKE_POST, REQUEST_CREATE_POST, RESPONSE_CREATE_POST } from "./types";
 
 export const loadPosts = (posts) => ({
   type: LOAD_POSTS,
@@ -8,16 +8,23 @@ export const getPosts = () => ({
   type: FETCH_ALL,
 });
 
-export const createPost = (post) => ({
-  type: CREATE,
-  payload: { post },
-});
 
 export const deletePost = (postId) => ({
   type: DELETE_POST,
   payload: { postId }
 })
 
+
+
+export const requestCreatePost = (post) => ({
+  type: REQUEST_CREATE_POST,
+  payload: { post },
+});
+
+export const responseCreatePost = (post) => ({
+  type: RESPONSE_CREATE_POST,
+  payload: { post },
+});
 
 
 export const requestUpdatePost = (postId, updatedPost) => ({

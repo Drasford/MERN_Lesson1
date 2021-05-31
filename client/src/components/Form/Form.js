@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
-import { createPost, requestUpdatePost } from "../../actions/posts";
+import { clearIdToUpdate, requestCreatePost, requestUpdatePost } from "../../actions/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { find, propEq } from "ramda";
 import { getAllPostsSelector } from "../../selectors/index";
@@ -34,8 +34,9 @@ const Form = () => {
     if (currentId) {
       dispatch(requestUpdatePost(currentId, postData));
     } else {
-      dispatch(createPost(postData));
+      dispatch(requestCreatePost(postData));
     }
+    clear();
   };
 
   const clear = () => {
@@ -46,6 +47,7 @@ const Form = () => {
       tags: [],
       selectedFile: "",
     });
+    dispatch(clearIdToUpdate())
   };
 
   return (
