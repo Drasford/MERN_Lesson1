@@ -11,3 +11,6 @@ export const REQUEST_UPDATE_POST = "REQUEST_UPDATE_POST";
 export const RESPONSE_UPDATE_POST = "RESPONSE_UPDATE_POST";
 
 export const LIKE_POST = "LIKE_POST";
+
+export const AUTH = "AUTH";
+export const LOGOUT = "LOGOUT";
